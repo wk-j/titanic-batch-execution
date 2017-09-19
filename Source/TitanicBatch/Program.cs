@@ -68,15 +68,15 @@ namespace TitanicBatch {
         const string OutputFileLocation = @"Data/MyResult.csv"; 
         // Replace this with the location you would like to use for your output file
 
-        const string localFile = @"Data/data.csv";
+        const string localFile = @"Data/Data.csv";
 
-        const string BaseUrl = "https://ussouthcentral.services.azureml.net/workspaces/b520db679c374a07a5335fdd1c879feb/services/a356d3cedb2243f4b05b08e51c3ba80c/jobs?api-version=2.0";    
+        const string BaseUrl = "https://ussouthcentral.services.azureml.net/workspaces/b520db679c374a07a5335fdd1c879feb/services/a356d3cedb2243f4b05b08e51c3ba80c/jobs";    
         // replace with your base url
 
         const string StorageAccountName = "wksa1"; 
         // Replace this with your Azure Storage Account name
 
-        static string StorageAccountKey = System.Environment.GetEnvironmentVariable("az_storeage_key");
+        static string StorageAccountKey = System.Environment.GetEnvironmentVariable("az_storage_key");
         // Replace this with your Azure Storage Key
 
         const string StorageContainerName = "blob1"; 
@@ -104,14 +104,13 @@ namespace TitanicBatch {
             Console.WriteLine(responseContent);
         }
 
-
-        static void SaveBlobToFile(AzureBlobDataReference blobLocation, string resultsLabel) {
+        async static void SaveBlobToFile(AzureBlobDataReference blobLocation, string resultsLabel) {
             var credentials = new StorageCredentials(blobLocation.SasBlobToken);
             var blobUrl = new Uri(new Uri(blobLocation.BaseLocation), blobLocation.RelativeLocation);
             var cloudBlob = new CloudBlockBlob(blobUrl, credentials);
 
             Console.WriteLine(string.Format("Reading the result from {0}", blobUrl.ToString()));
-            cloudBlob.DownloadToFileAsync(OutputFileLocation, FileMode.Create);
+            await cloudBlob.DownloadToFileAsync(OutputFileLocation, FileMode.Create);
 
             Console.WriteLine(string.Format("{0} have been written to the file {1}", resultsLabel, OutputFileLocation));
         }
@@ -169,7 +168,7 @@ namespace TitanicBatch {
             string storageConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1}", StorageAccountName, StorageAccountKey);
 
             UploadFileToBlob(localFile /*Replace this with the location of your input file*/,
-               "input1datablob.csv" /*Replace this with the name you would like to use for your Azure blob; this needs to have the same extension as the input file */,
+               "input5datablob.csv" /*Replace this with the name you would like to use for your Azure blob; this needs to have the same extension as the input file */,
                StorageContainerName, storageConnectionString);
 
             using (HttpClient client = new HttpClient()) {
@@ -179,7 +178,7 @@ namespace TitanicBatch {
                             "input1",
                             new AzureBlobDataReference() {
                                 ConnectionString = storageConnectionString,
-                                RelativeLocation = string.Format("{0}/input1datablob.csv", StorageContainerName)
+                                RelativeLocation = string.Format("{0}/input5datablob.csv", StorageContainerName)
                             }
                         },
                     },
@@ -189,7 +188,7 @@ namespace TitanicBatch {
                             "output1",
                             new AzureBlobDataReference() {
                                 ConnectionString = storageConnectionString,
-                                RelativeLocation = string.Format("{0}/output1results.csv", StorageContainerName)
+                                RelativeLocation = string.Format("{0}/output5results.csv", StorageContainerName)
                             }
                         },
                     },
@@ -197,13 +196,6 @@ namespace TitanicBatch {
                 };
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-
-                // WARNING: The 'await' statement below can result in a deadlock if you are calling this code from the UI thread of an ASP.Net application.
-                // One way to address this would be to call ConfigureAwait(false) so that the execution does not attempt to resume on the original context.
-                // For instance, replace code such as:
-                //      result = await DoSomeTask()
-                // with the following:
-                //      result = await DoSomeTask().ConfigureAwait(false)
 
 
                 Console.WriteLine("Submitting the job...");
