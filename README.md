@@ -1,6 +1,6 @@
 ## Titanic Batch Execution
 
-## CSharp
+### C# #
 
 ```bash
 dotnet add Source/TitanicBatch/TitanicBatch.csproj package Microsoft.AspNet.WebApi.Client
@@ -17,7 +17,7 @@ dotnet add Source/TitanicBatch/TitanicBatch.csproj package System.Spatial
 dotnet add Source/TitanicBatch/TitanicBatch.csproj package WindowsAzure.Storage
 ```
 
-## FSharp
+### F# #
 
 ```bash
 dotnet add Source/TitanicBatchFs/TitanicBatchFs.fsproj package Microsoft.AspNet.WebApi.Client
