@@ -189,7 +189,7 @@ namespace TitanicBatch {
                             "output1",
                             new AzureBlobDataReference() {
                                 ConnectionString = storageConnectionString,
-                                RelativeLocation = string.Format("/{0}/output1results.csv", StorageContainerName)
+                                RelativeLocation = string.Format("{0}/output1results.csv", StorageContainerName)
                             }
                         },
                     },

@@ -1,0 +1,31 @@
+### Submit but not start
+
+POST https://ussouthcentral.services.azureml.net/workspaces/b520db679c374a07a5335fdd1c879feb/services/a356d3cedb2243f4b05b08e51c3ba80c/jobs?api-version=2.0
+Authorization:Bearer {{az_titanic_key}}
+Content-Type:application/json 
+
+{  
+   "GlobalParameters":{  },
+   "Inputs":{  
+      "input1":{  
+         "ConnectionString":"DefaultEndpointsProtocol=https;AccountName=wksa1;AccountKey={{az_storage_key}}",
+         "RelativeLocation":"blob1/input1datablob.csv"
+      }
+   },
+   "Outputs":{  
+      "output1":{  
+         "ConnectionString":"DefaultEndpointsProtocol=https;AccountName=wksa1;AccountKey={{az_storage_key}}",
+         "RelativeLocation":"blob1/output1results.csv"
+      }
+   }
+}
+
+### Start
+
+POST https://ussouthcentral.services.azureml.net/workspaces/b520db679c374a07a5335fdd1c879feb/services/a356d3cedb2243f4b05b08e51c3ba80c/jobs/88a346fd18d34cfe8b7589431c9b5320/start?api-version=2.0
+Authorization:Bearer {{az_titanic_key}}
+
+### Get result
+
+GET https://ussouthcentral.services.azureml.net/workspaces/b520db679c374a07a5335fdd1c879feb/services/a356d3cedb2243f4b05b08e51c3ba80c/jobs/88a346fd18d34cfe8b7589431c9b5320?api-version=2.0
+Authorization:Bearer {{az_titanic_key}}
